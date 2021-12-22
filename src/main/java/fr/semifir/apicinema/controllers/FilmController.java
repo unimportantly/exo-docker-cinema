@@ -5,10 +5,12 @@ import fr.semifir.apicinema.entities.Film;
 import fr.semifir.apicinema.exceptions.NotFoundException;
 import fr.semifir.apicinema.services.FilmService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -25,18 +27,16 @@ public class FilmController {
 
     @GetMapping("{id}")
     public ResponseEntity<FilmDTO> findById(@PathVariable String id) {
-        Optional<FilmDTO> FilmDTO = null;
         try {
-            FilmDTO = this.service.findByID(id);
-        } catch (NotFoundException e) {
-           return ResponseEntity.notFound().header(e.getMessage()).build();
+            return ResponseEntity.ok(this.service.findByID(id).get());
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(FilmDTO.get());
     }
 
     @PostMapping
-    public FilmDTO save(@RequestBody Film film) {
-        return this.service.save(film);
+    public ResponseEntity<FilmDTO> save(@RequestBody Film film) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.service.save(film));
     }
 
     @PutMapping

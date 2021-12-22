@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public class SeanceService {
@@ -41,15 +42,9 @@ public class SeanceService {
      * @param id
      * @return
      */
-    public Optional<SeanceDTO> findByID(String id) throws NotFoundException {
+    public Optional<SeanceDTO> findByID(String id) throws NoSuchElementException {
         Optional<Seance> seance = this.repository.findById(id);
-        Optional<SeanceDTO> seanceDTO;
-        if (seance.isPresent()) {
-           seanceDTO = Optional.of(mapper.map(seance.get(), SeanceDTO.class));
-        } else {
-            throw new NotFoundException("Le seance n'a pas été trouvé");
-        }
-        return seanceDTO;
+        return Optional.of(mapper.map(seance.get(), SeanceDTO.class));
     }
 
     /**

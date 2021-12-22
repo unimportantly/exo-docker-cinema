@@ -7,10 +7,12 @@ import fr.semifir.apicinema.exceptions.NotFoundException;
 import fr.semifir.apicinema.services.SalleService;
 import fr.semifir.apicinema.services.SeanceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -27,18 +29,16 @@ public class SeanceController {
 
     @GetMapping("{id}")
     public ResponseEntity<SeanceDTO> findById(@PathVariable String id) {
-        Optional<SeanceDTO> SeanceDTO = null;
         try {
-            SeanceDTO = this.service.findByID(id);
-        } catch (NotFoundException e) {
-           return ResponseEntity.notFound().header(e.getMessage()).build();
+            return ResponseEntity.ok(this.service.findByID(id).get());
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().header(e.getMessage()).build();
         }
-        return ResponseEntity.ok(SeanceDTO.get());
     }
 
     @PostMapping
-    public SeanceDTO save(@RequestBody Seance seance) {
-        return this.service.save(seance);
+    public ResponseEntity<SeanceDTO> save(@RequestBody Seance seance) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.service.save(seance));
     }
 
     @PutMapping

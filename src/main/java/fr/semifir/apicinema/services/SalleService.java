@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public class SalleService {
@@ -41,15 +42,9 @@ public class SalleService {
      * @param id
      * @return
      */
-    public Optional<SalleDTO> findByID(String id) throws NotFoundException {
+    public Optional<SalleDTO> findByID(String id) throws NoSuchElementException {
         Optional<Salle> salle = this.repository.findById(id);
-        Optional<SalleDTO> salleDTO;
-        if (salle.isPresent()) {
-           salleDTO = Optional.of(mapper.map(salle.get(), SalleDTO.class));
-        } else {
-            throw new NotFoundException("Le salle n'a pas été trouvé");
-        }
-        return salleDTO;
+        return Optional.of(mapper.map(salle.get(), SalleDTO.class));
     }
 
     /**

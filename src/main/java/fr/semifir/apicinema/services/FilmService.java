@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public class FilmService {
@@ -44,15 +45,9 @@ public class FilmService {
      * @param id
      * @return
      */
-    public Optional<FilmDTO> findByID(String id) throws NotFoundException {
+    public Optional<FilmDTO> findByID(String id) throws NoSuchElementException {
         Optional<Film> film = this.repository.findById(id);
-        Optional<FilmDTO> seanceDTO;
-        if (film.isPresent()) {
-           seanceDTO = Optional.of(mapper.map(film.get(), FilmDTO.class));
-        } else {
-            throw new NotFoundException("Le film n'a pas été trouvé");
-        }
-        return seanceDTO;
+        return Optional.of(mapper.map(film.get(), FilmDTO.class));
     }
 
     /**
