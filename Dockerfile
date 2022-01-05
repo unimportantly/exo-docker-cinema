@@ -6,4 +6,5 @@ RUN mvn package
 FROM openjdk:11
 WORKDIR /app
 COPY --from=BUILD app/target/*.jar ./app.jar
+EXPOSE 8090
 CMD ["java", "-jar", "app.jar"]
