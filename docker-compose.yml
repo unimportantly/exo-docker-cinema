@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  cinema:
+    build: . #if we build the image directly from the dockerfile
+    container_name: cinema-container
+    ports:
+      - 90:90
+    networks:
+      - net-cinema
+    depends_on:
+      - cinema-db
+
+  db-cinema: #still a service, should be the same as the host from the app properties
+    image: mongo
+    container_name: cinema-db
+    ports:
+      - 27017:27017
+    volumes:
+      - vol-cinema:/data/db #the second part depends on the database, not on the app
+    networks:
+      - net-cinema
+
+networks:
+  net-cinema:
+
+volumes:
+  vol-cinema:
