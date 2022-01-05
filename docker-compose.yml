@@ -2,27 +2,27 @@ version: '3.8'
 
 services:
   cinema:
-    build: . #if we build the image directly from the dockerfile
-    container_name: cinema-container
-    ports:
-      - 90:90
-    networks:
+    build: . #if we build the image directly from the dockerfile, otherwise use image: image-name
+    container_name: cinema-container #name of the container we'll create
+    ports: #specify ports if needed
+      - 100:90
+    networks: #name of the network on which containers communicate
       - net-cinema
-    depends_on:
+    depends_on: #name of the db container this container depends on
       - cinema-db
 
-  db-cinema: #still a service, should be the same as the host from the app properties
-    image: mongo
-    container_name: cinema-db
-    ports:
+  db-cinema: #still a service, should be the same as the host from the app properties, "id" sorta
+    image: mongo #name of the image to base this container on
+    container_name: cinema-db #name of the container
+    ports: #db ports, here, mongo's
       - 27017:27017
-    volumes:
+    volumes: #name of the docker volume that'll help in persisting data in case the containers crash
       - vol-cinema:/data/db #the second part depends on the database, not on the app
-    networks:
+    networks: #name of the networks on which this container can communicate. it's an array
       - net-cinema
 
-networks:
+networks: #declares the network(s)
   net-cinema:
 
-volumes:
+volumes: #declares the volume(s)
   vol-cinema:
