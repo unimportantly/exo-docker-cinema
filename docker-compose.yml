@@ -4,7 +4,7 @@ services:
   cinema:
     build: . #if we build the image directly from the dockerfile, otherwise use image: image-name
     container_name: cinema-container #name of the container we'll create
-    ports: #specify ports if needed
+    ports: #specify ports if needed, overrides the EXPOSE from the dockerfile, i think
       - 100:90
     networks: #name of the network on which containers communicate
       - net-cinema
