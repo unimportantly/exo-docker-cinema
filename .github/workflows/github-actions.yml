@@ -1,0 +1,11 @@
+name: Exercice Action
+on: push
+jobs:
+  Exo-job:
+    runs-on: ubuntu-latest
+    steps:
+      -name: "tests"
+        run: echo "je fais les tests"
+      -name: "build"
+        run: echo "je fais le build"
+
