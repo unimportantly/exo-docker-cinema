@@ -1,11 +1,11 @@
 name: Exercice Action
-on: push
-  jobs:
-    test:
-      runs-on: ubuntu-latest
-      steps:
-        - name: "tests"
-          run: echo "je fais les tests"
-        - name: "build"
-          run: echo "je fais le build"
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "tests"
+        run: echo "je fais les tests"
+      - name: "build"
+        run: echo "je fais le build"
 
