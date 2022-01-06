@@ -3,6 +3,7 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/head/develop'
     steps:
       - name: "tests"
         run: echo "je fais les tests"
