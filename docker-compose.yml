@@ -7,9 +7,11 @@ services:
     ports: #specify ports if needed, overrides the EXPOSE from the dockerfile, i think
       - 100:90
     networks: #name of the network on which containers communicate
-      - net-cinema
-    depends_on: #name of the db container this container depends on
-      - cinema-db
+       net-cinema:
+         ipv4_address: 10.5.0.18
+    depends_on: #name of the db container this container depends on, means if the other service isn't launcher
+      # this one won't be either
+      - db-cinema
 
   db-cinema: #still a service, should be the same as the host from the app properties, "id" sorta
     image: mongo #name of the image to base this container on
@@ -19,10 +21,15 @@ services:
     volumes: #name of the docker volume that'll help in persisting data in case the containers crash
       - vol-cinema:/data/db #the second part depends on the database, not on the app
     networks: #name of the networks on which this container can communicate. it's an array
-      - net-cinema
+      net-cinema:
+        ipv4_address: 10.5.0.4
 
 networks: #declares the network(s)
   net-cinema:
-
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 10.5.0.0/16
+        gateway: 10.5.0.1
 volumes: #declares the volume(s)
   vol-cinema:
